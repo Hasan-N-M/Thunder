@@ -19,7 +19,24 @@ public class SyncSendMessage implements Sync {
         pubkeyChannelList = new ArrayList<>();
         channelStatusList = new ArrayList<>();
 
-        for (P2PDataObject obj : dataObjects) {
+        /* ********OpenRefactory Warning********
+		 Possible null pointer Dereference!
+		 Path: 
+			File: SyncProcessorImpl.java, Line: 84
+				Message syncSendMessage=messageFactory.getSyncSendMessage(dataObjects);
+				 Information is passed through the method call via dataObjects to the formal param dataObjects of the method. This later results into a null pointer dereference.
+			File: SyncMessageFactoryImpl.java, Line: 15
+				List<P2PDataObject> dataObjects
+				Variable dataObjects is declared as a formal parameter.
+			File: SyncMessageFactoryImpl.java, Line: 16
+				return new SyncSendMessage(dataObjects);
+				 Information is passed through the method call via dataObjects to the formal param dataObjects of the method. This later results into a null pointer dereference.
+			File: SyncSendMessage.java, Line: 22
+				dataObjects
+				dataObjects is used in iteration.
+				The expression is enclosed inside an Enhanced For statement.
+		*/
+		for (P2PDataObject obj : dataObjects) {
             if (obj instanceof PubkeyIPObject) {
                 pubkeyIPList.add((PubkeyIPObject) obj);
 
