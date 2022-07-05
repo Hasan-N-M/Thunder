@@ -346,10 +346,32 @@ public class LNPaymentProcessorImpl extends LNPaymentProcessor {
         for (PaymentData payment : updateTemp.redeemedPayments) {
             PaymentWrapper wrapper = dbHandler.getPayment(payment.secret);
             if (weStartedExchange) {
-                wrapper.statusReceiver = REDEEMED;
+                
+				/* ********OpenRefactory Warning********
+				 Possible null pointer Dereference!
+				 Path: 
+					File: LNPaymentProcessorImpl.java, Line: 347
+						PaymentWrapper wrapper=dbHandler.getPayment(payment.secret);
+						Variable wrapper is initialized null.
+					File: LNPaymentProcessorImpl.java, Line: 349
+						wrapper.statusReceiver=REDEEMED;
+						wrapper is referenced in field access.
+				*/
+				wrapper.statusReceiver = REDEEMED;
                 dbHandler.updatePaymentReceiver(wrapper);
             } else {
-                wrapper.statusSender = REDEEMED;
+                
+				/* ********OpenRefactory Warning********
+				 Possible null pointer Dereference!
+				 Path: 
+					File: LNPaymentProcessorImpl.java, Line: 347
+						PaymentWrapper wrapper=dbHandler.getPayment(payment.secret);
+						Variable wrapper is initialized null.
+					File: LNPaymentProcessorImpl.java, Line: 352
+						wrapper.statusSender=REDEEMED;
+						wrapper is referenced in field access.
+				*/
+				wrapper.statusSender = REDEEMED;
                 dbHandler.updatePaymentSender(wrapper);
             }
             eventHelper.onPaymentCompleted(payment);
