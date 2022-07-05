@@ -312,7 +312,17 @@ public class ConnectionManagerImpl implements ConnectionManager, ConnectionRegis
         ClientObject node = new ClientObject();
         node.isServer = false;
         node.intent = intent;
-        node.nodeKey = new NodeKey(ipObject.pubkey);
+        /* ********OpenRefactory Warning********
+		 Possible null pointer Dereference!
+		 Path: 
+			File: ConnectionManagerImpl.java, Line: 125
+				ClientObject clientObject=ipObjectToNode(ipObject,ConnectionIntent.MISC);
+				 Information is passed through the method call via ipObject to the formal param ipObject of the method. This later results into a null pointer dereference.
+			File: ConnectionManagerImpl.java, Line: 315
+				node.nodeKey=new NodeKey(ipObject.pubkey);
+				ipObject is referenced in field access.
+		*/
+		node.nodeKey = new NodeKey(ipObject.pubkey);
         node.host = ipObject.hostname;
         node.port = ipObject.port;
         return node;

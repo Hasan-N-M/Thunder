@@ -48,7 +48,14 @@ public class SeedNodes {
         PubkeyIPObject seed1 = new PubkeyIPObject();
         seed1.hostname = "localhost";
         seed1.port = Constants.STANDARD_PORT;
-        seed1.pubkey = node.nodeKey.getPubKey();
+        /* ********OpenRefactory Warning********
+		 Possible null pointer Dereference!
+		 Path: 
+			File: SeedNodes.java, Line: 51
+				seed1.pubkey=node.nodeKey.getPubKey();
+				nodeKey is referenced in method invocation.
+		*/
+		seed1.pubkey = node.nodeKey.getPubKey();
 
         ipList.clear();
 

@@ -83,7 +83,21 @@ public class ScriptTools {
                     "CHECKSIG");
 
     public static Script getChannelTxOutputRevocation (RevocationHash revocationHash, ECKey revocableKey, ECKey counterpartyKey, int revocationDelay) {
-        return produceScript(
+        
+		/* ********OpenRefactory Warning********
+		 Possible null pointer Dereference!
+		 Path: 
+			File: LNPaymentLogicImpl.java, Line: 187
+				return this.getChannelTransaction(new TransactionOutPoint(Constants.getNetwork(),0,channel.anchorTxHash),channel.channelStatus.reverse(),channel.keyServer,channel.keyClient);
+				 Information is passed through the method call via channel.channelStatus.reverse() to the formal param channelStatus of the method. This later results into a null pointer dereference. inside field revoHashServerNext ( from class ChannelStatus).
+			File: LNPaymentLogicImpl.java, Line: 32
+				transaction.addOutput(Coin.valueOf(0),ScriptTools.getChannelTxOutputRevocation(channelStatus.revoHashServerNext,server,client,channelStatus.csvDelay));
+				 Information is passed through the method call via channelStatus.revoHashServerNext to the formal param revocationHash of the method. This later results into a null pointer dereference.
+			File: ScriptTools.java, Line: 88
+				return produceScript(CHANNEL_TX_OUTPUT_REVOCATION,revocationHash.secretHash,counterpartyKey.getPubKey(),integerToByteArray(revocationDelay),revocableKey.getPubKey());
+				revocationHash is referenced in field access.
+		*/
+		return produceScript(
                 CHANNEL_TX_OUTPUT_REVOCATION,
                 revocationHash.secretHash,
                 counterpartyKey.getPubKey(),
@@ -118,7 +132,27 @@ public class ScriptTools {
 
     public static Script getChannelTxOutputPaymentSending (ECKey revocableKey, ECKey counterpartyKey,
                                                            RevocationHash revocationHash, PaymentSecret secret, int refundTimeout) {
-        return produceScript(CHANNEL_TX_OUTPUT_PAYMENT_SENDING_ONE, revocationHash.secretHash, secret.hash,
+        
+															/* ********OpenRefactory Warning********
+															 Possible null pointer Dereference!
+															 Path: 
+																File: LNPaymentLogicImpl.java, Line: 187
+																	return this.getChannelTransaction(new TransactionOutPoint(Constants.getNetwork(),0,channel.anchorTxHash),channel.channelStatus.reverse(),channel.keyServer,channel.keyClient);
+																	 Information is passed through the method call via channel.channelStatus.reverse() to the formal param channelStatus of the method. This later results into a null pointer dereference. inside field revoHashServerNext ( from class ChannelStatus).
+																File: LNPaymentLogicImpl.java, Line: 39
+																	transaction=addPayments(transaction,channelStatus,channelStatus.revoHashServerNext,server,client);
+																	 Information is passed through the method call via channelStatus.revoHashServerNext to the formal param revocationHash of the method. This later results into a null pointer dereference.
+																File: LNPaymentLogicImpl.java, Line: 50
+																	RevocationHash revocationHash
+																	Variable revocationHash is declared as a formal parameter.
+																File: LNPaymentLogicImpl.java, Line: 57
+																	script=ScriptTools.getChannelTxOutputPaymentSending(keyServer,keyClient,revocationHash,payment.secret,payment.timestampRefund);
+																	 Information is passed through the method call via revocationHash to the formal param revocationHash of the method. This later results into a null pointer dereference.
+																File: ScriptTools.java, Line: 121
+																	return produceScript(CHANNEL_TX_OUTPUT_PAYMENT_SENDING_ONE,revocationHash.secretHash,secret.hash,counterpartyKey.getPubKey(),integerToByteArray(refundTimeout),revocableKey.getPubKey(),counterpartyKey.getPubKey());
+																	revocationHash is referenced in field access.
+															*/
+		return produceScript(CHANNEL_TX_OUTPUT_PAYMENT_SENDING_ONE, revocationHash.secretHash, secret.hash,
                 counterpartyKey.getPubKey(), integerToByteArray(refundTimeout), revocableKey.getPubKey(), counterpartyKey.getPubKey());
     }
 
@@ -145,7 +179,27 @@ public class ScriptTools {
 
     public static Script getChannelTxOutputPaymentReceiving (ECKey revocableKey, ECKey counterpartyKey,
                                                              RevocationHash revocationHash, PaymentSecret secret, int refundTimeout) {
-        return produceScript(CHANNEL_TX_OUTPUT_PAYMENT_RECEIVING_ONE, revocationHash.secretHash, counterpartyKey.getPubKey(),
+        
+																/* ********OpenRefactory Warning********
+																 Possible null pointer Dereference!
+																 Path: 
+																	File: LNPaymentLogicImpl.java, Line: 187
+																		return this.getChannelTransaction(new TransactionOutPoint(Constants.getNetwork(),0,channel.anchorTxHash),channel.channelStatus.reverse(),channel.keyServer,channel.keyClient);
+																		 Information is passed through the method call via channel.channelStatus.reverse() to the formal param channelStatus of the method. This later results into a null pointer dereference. inside field revoHashServerNext ( from class ChannelStatus).
+																	File: LNPaymentLogicImpl.java, Line: 39
+																		transaction=addPayments(transaction,channelStatus,channelStatus.revoHashServerNext,server,client);
+																		 Information is passed through the method call via channelStatus.revoHashServerNext to the formal param revocationHash of the method. This later results into a null pointer dereference.
+																	File: LNPaymentLogicImpl.java, Line: 50
+																		RevocationHash revocationHash
+																		Variable revocationHash is declared as a formal parameter.
+																	File: LNPaymentLogicImpl.java, Line: 59
+																		script=ScriptTools.getChannelTxOutputPaymentReceiving(keyServer,keyClient,revocationHash,payment.secret,payment.timestampRefund);
+																		 Information is passed through the method call via revocationHash to the formal param revocationHash of the method. This later results into a null pointer dereference.
+																	File: ScriptTools.java, Line: 148
+																		return produceScript(CHANNEL_TX_OUTPUT_PAYMENT_RECEIVING_ONE,revocationHash.secretHash,counterpartyKey.getPubKey(),secret.hash,revocableKey.getPubKey(),counterpartyKey.getPubKey(),integerToByteArray(refundTimeout),counterpartyKey.getPubKey());
+																		revocationHash is referenced in field access.
+																*/
+		return produceScript(CHANNEL_TX_OUTPUT_PAYMENT_RECEIVING_ONE, revocationHash.secretHash, counterpartyKey.getPubKey(),
                 secret.hash, revocableKey.getPubKey(), counterpartyKey.getPubKey(), integerToByteArray(refundTimeout), counterpartyKey.getPubKey());
     }
 
@@ -166,7 +220,21 @@ public class ScriptTools {
                             "ENDIF");
 
     public static Script getPaymentTxOutput (ECKey keyReceiver, ECKey keyRevocation, RevocationHash revocationHash, int revocationTimeout) {
-        return produceScript(CHANNEL_TX_OUTPUT_PAYMENT_TWO, revocationHash.secretHash, keyRevocation.getPubKey(),
+        
+		/* ********OpenRefactory Warning********
+		 Possible null pointer Dereference!
+		 Path: 
+			File: LNPaymentLogicImpl.java, Line: 212
+				return this.getPaymentTransactions(channelTx.getHash(),channel.channelStatus.reverse(),channel.keyClient,channel.keyServer);
+				 Information is passed through the method call via channel.channelStatus.reverse() to the formal param channelStatus of the method. This later results into a null pointer dereference. inside field revoHashServerNext ( from class ChannelStatus).
+			File: LNPaymentLogicImpl.java, Line: 97
+				Script script=ScriptTools.getPaymentTxOutput(keyServer,keyClient,channelStatus.revoHashServerNext,channelStatus.csvDelay);
+				 Information is passed through the method call via channelStatus.revoHashServerNext to the formal param revocationHash of the method. This later results into a null pointer dereference.
+			File: ScriptTools.java, Line: 169
+				return produceScript(CHANNEL_TX_OUTPUT_PAYMENT_TWO,revocationHash.secretHash,keyRevocation.getPubKey(),integerToByteArray(revocationTimeout),keyReceiver.getPubKey());
+				revocationHash is referenced in field access.
+		*/
+		return produceScript(CHANNEL_TX_OUTPUT_PAYMENT_TWO, revocationHash.secretHash, keyRevocation.getPubKey(),
                 integerToByteArray(revocationTimeout), keyReceiver.getPubKey());
     }
 

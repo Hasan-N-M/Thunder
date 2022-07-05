@@ -137,14 +137,35 @@ public class PubkeyIPObject extends P2PDataObject {
 
     public static List<PubkeyIPObject> removeFromListByPubkey (List<PubkeyIPObject> fullList, List<PubkeyIPObject> toRemove) {
         List<PubkeyIPObject> temp = new ArrayList<>();
-        for (PubkeyIPObject full : fullList) {
+        /* ********OpenRefactory Warning********
+		 Possible null pointer Dereference!
+		 Path: 
+			File: ConnectionManagerImpl.java, Line: 194
+				ipList=PubkeyIPObject.removeFromListByPubkey(ipList,alreadyFetched);
+				 Information is passed through the method call via ipList to the formal param fullList of the method. This later results into a null pointer dereference.
+			File: PubkeyIPObject.java, Line: 140
+				fullList
+				fullList is used in iteration.
+				The expression is enclosed inside an Enhanced For statement.
+		*/
+		for (PubkeyIPObject full : fullList) {
             for (PubkeyIPObject remove : toRemove) {
                 if (Arrays.equals(full.pubkey, remove.pubkey)) {
                     temp.add(full);
                 }
             }
         }
-        fullList.removeAll(temp);
+        /* ********OpenRefactory Warning********
+		 Possible null pointer Dereference!
+		 Path: 
+			File: ConnectionManagerImpl.java, Line: 194
+				ipList=PubkeyIPObject.removeFromListByPubkey(ipList,alreadyFetched);
+				 Information is passed through the method call via ipList to the formal param fullList of the method. This later results into a null pointer dereference.
+			File: PubkeyIPObject.java, Line: 147
+				fullList.removeAll(temp);
+				fullList is referenced in method invocation.
+		*/
+		fullList.removeAll(temp);
         return fullList;
     }
 
