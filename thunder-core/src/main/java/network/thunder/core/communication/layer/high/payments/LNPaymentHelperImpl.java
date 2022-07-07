@@ -121,7 +121,18 @@ public class LNPaymentHelperImpl implements LNPaymentHelper {
         if (peeledOnion.isLastHop) {
             dbHandler.updatePaymentAddReceiverAddress(payment.secret, new byte[0]);
         } else {
-            dbHandler.updatePaymentAddReceiverAddress(payment.secret, peeledOnion.nextHop.getPubKey());
+            
+			/* ********OpenRefactory Warning********
+			 Possible null pointer Dereference!
+			 Path: 
+				File: LNPaymentHelperImpl.java, Line: 82
+					saveReceiverToDatabase(paymentData,peeledOnion);
+					 Information is passed through the method call via peeledOnion to the formal param peeledOnion of the method. This later results into a null pointer dereference. inside field nextHop ( from class PeeledOnion).
+				File: LNPaymentHelperImpl.java, Line: 124
+					dbHandler.updatePaymentAddReceiverAddress(payment.secret,peeledOnion.nextHop.getPubKey());
+					nextHop is referenced in method invocation.
+			*/
+			dbHandler.updatePaymentAddReceiverAddress(payment.secret, peeledOnion.nextHop.getPubKey());
         }
     }
 
